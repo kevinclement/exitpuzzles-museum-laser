@@ -8,14 +8,9 @@ Logic logic;
 BluetoothSerial SerialBT;
 
 void setup() {
-  Serial.printf("Museum Laser Controller by kevinc...\n");
-
   logic.setup();
 
   pinMode(17, OUTPUT);
-
-//  sm.printHelp();
-//  printVariables();
 
   SerialBT.begin("FooBTName"); //Bluetooth device name
 }
@@ -43,9 +38,5 @@ void setup() {
 void loop() {
     digitalWrite(17, HIGH);
 
-    // read bluetooth messages
-    //readAnyBluetoothMessage();
-
-    // read serial messages
-    //readAnySerialMessage();
+    logic.handle();
 }

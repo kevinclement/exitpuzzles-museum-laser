@@ -8,6 +8,7 @@ public:
   SerialManager serial;
 
   void setup();
+  void handle();
 
 private:
   void readStoredVariables();

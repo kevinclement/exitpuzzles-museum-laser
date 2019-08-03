@@ -15,6 +15,13 @@ void Logic::setup() {
     serial.setup();
 
     readStoredVariables();
+
+    serial.printHelp();
+    printVariables();
+}
+
+void Logic::handle() {
+    serial.handle();
 }
 
 void Logic::readStoredVariables() {

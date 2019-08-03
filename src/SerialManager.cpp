@@ -8,6 +8,10 @@ SerialManager::SerialManager(Logic &logic)
 }
 
 void SerialManager::setup() {
+  Serial.begin(115200);
+
+  Serial.printf("Museum Laser Controller by kevinc...\n");
+
   // set read timeout to something really low so we don't hang
   Serial.setTimeout(10);
 
@@ -22,13 +26,18 @@ void SerialManager::print(char *fmt, ...) {
     va_end(args);
 
     // print to serial
-    //Serial.print(buf);
+    Serial.print(buf);
 
     // print to bluetooth if available
     //SerialBT.print(buf);
 }
 
 void SerialManager::handle() {
+    // read bluetooth messages
+    //readAnyBluetoothMessage();
+
+    // read serial messages
+    //readAnySerialMessage();
 }
 
 void SerialManager::handleMessage(String msg) {
