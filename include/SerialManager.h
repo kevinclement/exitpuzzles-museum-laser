@@ -14,5 +14,7 @@ private:
   Logic &_logic;
 
   void handleMessage(String msg);
+  void readAnyBluetoothMessage();
+  void readAnySerialMessage();
 };
 

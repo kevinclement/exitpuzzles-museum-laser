@@ -1,6 +1,9 @@
 #include "Arduino.h"
 #include "consts.h"
 #include "Logic.h"
+#include "BluetoothSerial.h"
+
+BluetoothSerial SerialBT;
 
 SerialManager::SerialManager(Logic &logic)
 : _logic(logic)
@@ -16,6 +19,9 @@ void SerialManager::setup() {
   Serial.setTimeout(10);
 
   while (!Serial); // Wait untilSerial is ready 
+
+  // Bluetooth device name
+  SerialBT.begin("FooBTName");
 }
 
 void SerialManager::print(char *fmt, ...) {
@@ -29,15 +35,35 @@ void SerialManager::print(char *fmt, ...) {
     Serial.print(buf);
 
     // print to bluetooth if available
-    //SerialBT.print(buf);
+    SerialBT.print(buf);
 }
 
 void SerialManager::handle() {
     // read bluetooth messages
-    //readAnyBluetoothMessage();
+    readAnyBluetoothMessage();
 
     // read serial messages
-    //readAnySerialMessage();
+    readAnySerialMessage();
+}
+
+void SerialManager::readAnyBluetoothMessage() {
+  if (!SerialBT.available()) {
+    return;
+  }
+
+  // read and handle message from bluetooth
+  String str = SerialBT.readStringUntil('\n');
+  handleMessage(str);
+}
+
+void SerialManager::readAnySerialMessage() {
+  if (!Serial.available()) {
+    return;
+  }
+
+  // read and handle message from serial
+  String str = Serial.readStringUntil('\n');
+  handleMessage(str);
 }
 
 void SerialManager::handleMessage(String msg) {
