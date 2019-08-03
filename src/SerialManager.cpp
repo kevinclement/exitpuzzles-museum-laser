@@ -13,12 +13,21 @@ void SerialManager::setup() {
   while (!Serial); // Wait untilSerial is ready 
 }
 
-void SerialManager::teardown() {
-  // noop: I actually want to keep this working
+void SerialManager::print(char *fmt, ...) {
+    char buf[128];     // resulting string limited to 128 chars
+    va_list args;
+    va_start(args, fmt);
+    vsnprintf(buf, 128, fmt, args);
+    va_end(args);
+
+    // print to serial
+    //Serial.print(buf);
+
+    // print to bluetooth if available
+    //SerialBT.print(buf);
 }
 
 void SerialManager::handle() {
-  
 }
 
 void SerialManager::printHelp() {

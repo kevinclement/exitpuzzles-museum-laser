@@ -10,5 +10,7 @@ public:
   void setup();
 
 private:
+  void readStoredVariables();
+  void printVariables();
 };
 

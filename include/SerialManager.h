@@ -7,7 +7,7 @@ public:
   SerialManager(Logic &logic);
   void setup();
   void handle();
-  void teardown();
+  void print(char *fmt, ...);
   void printHelp();
 
 private:
