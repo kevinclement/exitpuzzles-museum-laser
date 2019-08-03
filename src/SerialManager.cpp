@@ -1,4 +1,5 @@
 #include "Arduino.h"
+#include "consts.h"
 #include "Logic.h"
 
 SerialManager::SerialManager(Logic &logic)
@@ -28,6 +29,53 @@ void SerialManager::print(char *fmt, ...) {
 }
 
 void SerialManager::handle() {
+}
+
+void SerialManager::handleMessage(String msg) {
+  Serial.print("got '");
+  Serial.print(msg);
+  Serial.println("' command");
+
+  String command = msg;
+  int value = -1;
+
+  // check if we need to split on space for advance commands
+  for (int i = 0; i <= msg.length(); i++) {
+      if (msg.charAt(i) == ' ') {         
+          command = msg.substring(0, i);
+          value = msg.substring(i+1, msg.length()).toInt();
+      }
+  }
+ 
+  if (command == "enable") {
+    print("enabling device to drop now...%s", CRLF);
+    //ENABLED = true;
+  }
+  else if (command == "disable") {
+    print("disabling device now...%s", CRLF);
+    //ENABLED = false;
+  }
+  else if (command == "drop") {
+    //FORCE_DROP = true;
+    print("dropping bottom now...%s", CRLF);
+  }
+  else if (command == "threshold") {
+    print("setting threshold to '%d'...%s", value, CRLF);
+    // LIGHT_THRESHOLD = value;
+    // EEPROM.put(LIGHT_THRESHOLD_ADDR, value);
+    // EEPROM.commit();    
+  }
+  else if (command == "status") {
+    //printVariables();
+  }
+  else if (command == "reset") {
+    ESP.restart();
+  } else {
+    int str_len = command.length() + 1; 
+    char char_array[str_len];
+    command.toCharArray(char_array, str_len);
+    print("unknown command: %s%s", char_array, CRLF);
+  } 
 }
 
 void SerialManager::printHelp() {

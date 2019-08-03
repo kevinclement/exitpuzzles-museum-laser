@@ -1,11 +1,10 @@
 #include "Arduino.h"
 #include "EEPROM.h"
-#include "Logic.h"
+#include "logic.h"
+#include "consts.h"
 
 int  FOO_VAR;                  // some foo desc
 int  FOO_VAR_ADDR = 0;         // where to store foo in eeprom
-
-char CRLF[] = "\r\n";
 
 Logic::Logic() 
   : serial(*this)

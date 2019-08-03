@@ -12,5 +12,7 @@ public:
 
 private:
   Logic &_logic;
+
+  void handleMessage(String msg);
 };
 
