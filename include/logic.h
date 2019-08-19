@@ -9,9 +9,12 @@ public:
 
   void setup();
   void handle();
+  void enable();
+  void disable();
+  void printVariables();
 
 private:
   void readStoredVariables();
-  void printVariables();
+  
 };
 

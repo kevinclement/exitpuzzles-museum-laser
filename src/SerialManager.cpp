@@ -16,15 +16,15 @@ void SerialManager::setup() {
   Serial.printf("Museum Laser Controller by kevinc...\n");
 
   // set read timeout to something really low so we don't hang
-  Serial.setTimeout(10);
+  //Serial.setTimeout(10);
 
   while (!Serial); // Wait untilSerial is ready 
 
   // Bluetooth device name
-  SerialBT.begin("FooBTName");
+  SerialBT.begin("ExitMuseumLaser");
 }
 
-void SerialManager::print(char *fmt, ...) {
+void SerialManager::print(const char *fmt, ...) {
     char buf[128];     // resulting string limited to 128 chars
     va_list args;
     va_start(args, fmt);
@@ -72,36 +72,17 @@ void SerialManager::handleMessage(String msg) {
   Serial.println("' command");
 
   String command = msg;
-  int value = -1;
 
-  // check if we need to split on space for advance commands
-  for (int i = 0; i <= msg.length(); i++) {
-      if (msg.charAt(i) == ' ') {         
-          command = msg.substring(0, i);
-          value = msg.substring(i+1, msg.length()).toInt();
-      }
-  }
- 
   if (command == "enable") {
-    print("enabling device to drop now...%s", CRLF);
-    //ENABLED = true;
+    print("turning on laser...%s", CRLF);
+    _logic.enable();
   }
   else if (command == "disable") {
-    print("disabling device now...%s", CRLF);
-    //ENABLED = false;
-  }
-  else if (command == "drop") {
-    //FORCE_DROP = true;
-    print("dropping bottom now...%s", CRLF);
-  }
-  else if (command == "threshold") {
-    print("setting threshold to '%d'...%s", value, CRLF);
-    // LIGHT_THRESHOLD = value;
-    // EEPROM.put(LIGHT_THRESHOLD_ADDR, value);
-    // EEPROM.commit();    
+    print("turning off laser...%s", CRLF);
+    _logic.disable();
   }
   else if (command == "status") {
-    //printVariables();
+    _logic.printVariables();
   }
   else if (command == "reset") {
     ESP.restart();
@@ -115,8 +96,8 @@ void SerialManager::handleMessage(String msg) {
 
 void SerialManager::printHelp() {
   Serial.println("Available commands:");
-  Serial.println("  enable         - turns device on");
-  Serial.println("  foo N          - set foo to value N");
+  Serial.println("  enable         - turns laser on");
+  Serial.println("  disable        - turns laser off");  
   Serial.println("  status         - prints the status of the device variables");
   Serial.println("  reset          - software reset the device");
 }
